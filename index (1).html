@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tooba Rizwan — سالگرہ مبارک</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep:#03010d;--void:#07031a;--nb1:#150529;--nb2:#2a0854;
+  --purple:#6b21a8;--violet:#8b5cf6;--lav:#c4b5fd;--star:#f0eaff;
+  --gold:#fbbf24;--rose:#e879f9;--teal:#2dd4bf;--ink:#1a0533;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--deep);font-family:'Cormorant Garamond',serif;color:var(--star);}
+
+/* ── CURSOR ── */
+#cur{width:8px;height:8px;background:var(--lav);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .1s;box-shadow:0 0 12px var(--violet),0 0 24px var(--violet);mix-blend-mode:screen;}
+#cur-r{width:32px;height:32px;border:1px solid rgba(196,181,253,.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:all .18s ease;}
+
+/* ── SCENES ── */
+.scene{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .8s ease;overflow:hidden;}
+.scene.active{opacity:1;pointer-events:all;}
+
+/* ── NAV DOTS ── */
+#nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:500;direction:ltr;}
+.dot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(196,181,253,.4);cursor:pointer;transition:all .3s;}
+.dot.on{background:var(--lav);box-shadow:0 0 8px var(--violet);}
+
+/* ── SHARED BG ── */
+canvas.bg{position:absolute;inset:0;width:100%;height:100%;}
+
+/* ══════════════════════════════════════
+   SCENE 1 — THE DOOR
+══════════════════════════════════════ */
+#s1{background:radial-gradient(ellipse at 50% 60%,#1a0533 0%,#03010d 70%);}
+#door-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;}
+.door-title{font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(28px,5vw,52px);font-weight:700;background:linear-gradient(135deg,#e9d5ff,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;animation:s1fade 2s ease forwards;opacity:0;filter:drop-shadow(0 0 30px rgba(139,92,246,.5));}
+.door-sub{font-style:italic;font-size:clamp(13px,2vw,17px);color:rgba(196,181,253,.5);letter-spacing:.25em;text-align:center;margin-top:12px;animation:s1fade 2s ease .4s forwards;opacity:0;direction:ltr;}
+#door-svg-wrap{margin-top:48px;animation:s1fade 2s ease .8s forwards;opacity:0;position:relative;}
+#door-svg{cursor:pointer;filter:drop-shadow(0 0 20px rgba(107,33,168,.6));transition:filter .3s;}
+#door-svg:hover{filter:drop-shadow(0 0 40px rgba(196,181,253,.8));}
+.knock-hint{font-style:italic;font-size:13px;letter-spacing:.3em;color:rgba(196,181,253,.4);text-align:center;margin-top:20px;animation:pulse-hint 2s ease-in-out infinite;direction:ltr;}
+@keyframes pulse-hint{0%,100%{opacity:.3;}50%{opacity:1;}}
+@keyframes s1fade{to{opacity:1;}}
+#door-open-anim{position:absolute;inset:-100px;pointer-events:none;opacity:0;}
+
+/* ══════════════════════════════════════
+   SCENE 2 — STAR CONSTELLATION WORDS
+══════════════════════════════════════ */
+#s2{background:radial-gradient(ellipse at 30% 40%,#1a0840 0%,#03010d 65%);}
+#s2-canvas{position:absolute;inset:0;width:100%;height:100%;}
+#s2-hint{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);font-style:italic;font-size:13px;letter-spacing:.25em;color:rgba(196,181,253,.4);text-align:center;direction:ltr;animation:pulse-hint 3s ease-in-out infinite;}
+#s2-title{position:absolute;top:32px;left:50%;transform:translateX(-50%);font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(16px,2.5vw,24px);color:rgba(196,181,253,.6);white-space:nowrap;text-align:center;}
+#s2-popup{position:absolute;pointer-events:none;opacity:0;transition:opacity .3s;background:rgba(10,4,28,.85);border:1px solid rgba(139,92,246,.3);border-radius:4px;padding:16px 22px;max-width:340px;backdrop-filter:blur(12px);font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(14px,2vw,18px);color:var(--lav);line-height:2;text-align:center;direction:rtl;}
+
+/* ══════════════════════════════════════
+   SCENE 3 — METEOR POETRY RAIN
+══════════════════════════════════════ */
+#s3{background:radial-gradient(ellipse at 70% 30%,#0d0224 0%,#03010d 60%);}
+#s3-canvas{position:absolute;inset:0;width:100%;height:100%;}
+#s3-title{position:absolute;top:36px;left:50%;transform:translateX(-50%);text-align:center;direction:ltr;}
+#s3-title p:first-child{font-family:'IM Fell English SC',serif;font-size:clamp(20px,3vw,30px);color:var(--gold);letter-spacing:.15em;}
+#s3-title p:last-child{font-style:italic;font-size:13px;color:rgba(196,181,253,.4);letter-spacing:.2em;margin-top:6px;}
+#s3-catch{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);font-style:italic;font-size:13px;letter-spacing:.3em;color:rgba(196,181,253,.35);direction:ltr;animation:pulse-hint 2.5s ease-in-out infinite;}
+
+/* ══════════════════════════════════════
+   SCENE 4 — WISH GARDEN
+══════════════════════════════════════ */
+#s4{background:radial-gradient(ellipse at 50% 80%,#0d1a2a 0%,#03010d 60%);}
+#s4-canvas{position:absolute;inset:0;width:100%;height:100%;}
+#s4-title{position:absolute;top:36px;left:50%;transform:translateX(-50%);text-align:center;}
+#s4-title p:first-child{font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(18px,3vw,28px);color:var(--rose);text-shadow:0 0 20px rgba(232,121,249,.5);}
+#s4-title p:last-child{font-style:italic;font-size:12px;color:rgba(196,181,253,.4);letter-spacing:.25em;margin-top:6px;direction:ltr;}
+#s4-hint{position:absolute;bottom:68px;left:50%;transform:translateX(-50%);font-style:italic;font-size:13px;letter-spacing:.25em;color:rgba(196,181,253,.35);direction:ltr;animation:pulse-hint 2.5s ease-in-out infinite;}
+
+/* ══════════════════════════════════════
+   SCENE 5 — CONSTELLATION NAME
+══════════════════════════════════════ */
+#s5{background:radial-gradient(ellipse at 50% 50%,#0a0320 0%,#03010d 70%);}
+#s5-canvas{position:absolute;inset:0;width:100%;height:100%;}
+#s5-label{position:absolute;top:38px;left:50%;transform:translateX(-50%);text-align:center;direction:ltr;}
+#s5-label p:first-child{font-family:'IM Fell English SC',serif;font-size:clamp(16px,2.5vw,22px);color:rgba(196,181,253,.5);letter-spacing:.3em;}
+#s5-label p:last-child{font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(14px,2vw,20px);color:rgba(196,181,253,.4);margin-top:8px;}
+#s5-name{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(24px,4vw,40px);color:var(--rose);text-align:center;white-space:nowrap;opacity:0;transition:opacity 1s;text-shadow:0 0 30px rgba(232,121,249,.6);}
+
+/* ══════════════════════════════════════
+   SCENE 6 — FULL POEM FINALE
+══════════════════════════════════════ */
+#s6{background:radial-gradient(ellipse at 50% 20%,#1a0533 0%,#03010d 60%);overflow-y:auto!important;}
+#s6-inner{min-height:100%;display:flex;flex-direction:column;align-items:center;padding:60px 20px 100px;position:relative;z-index:1;}
+#s6-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;}
+.finale-badge{font-style:italic;font-size:12px;letter-spacing:.35em;color:rgba(196,181,253,.4);text-transform:lowercase;margin-bottom:20px;direction:ltr;}
+.finale-name{font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(36px,7vw,72px);font-weight:700;background:linear-gradient(135deg,#e9d5ff,#c4b5fd,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-align:center;line-height:1.4;filter:drop-shadow(0 0 30px rgba(139,92,246,.4));}
+.finale-divider{display:flex;align-items:center;gap:16px;margin:24px 0;}
+.fdl{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--violet),transparent);}
+.finale-poem-title{font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(18px,3vw,28px);color:var(--gold);text-align:center;margin-bottom:40px;text-shadow:0 0 20px rgba(251,191,36,.3);}
+.poem-card{max-width:800px;width:100%;background:linear-gradient(135deg,rgba(21,5,41,.85),rgba(7,3,26,.9));border:1px solid rgba(139,92,246,.2);border-radius:2px;padding:clamp(28px,5vw,56px) clamp(20px,5vw,60px);backdrop-filter:blur(20px);box-shadow:0 0 80px rgba(107,33,168,.15),inset 0 0 50px rgba(45,10,94,.2);position:relative;}
+.poem-card::before,.poem-card::after{content:'';position:absolute;width:36px;height:36px;border-color:rgba(196,181,253,.25);border-style:solid;}
+.poem-card::before{top:10px;right:10px;border-width:1px 1px 0 0;}
+.poem-card::after{bottom:10px;left:10px;border-width:0 0 1px 1px;}
+.poem-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 32px;direction:rtl;}
+.sher{padding:12px 0;border-bottom:1px solid rgba(139,92,246,.08);opacity:0;transform:translateY(12px);transition:opacity .8s,transform .8s;}
+.sher.vis{opacity:1;transform:translateY(0);}
+.sher:last-child{border-bottom:none;}
+.misra{font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(13px,2vw,16px);line-height:2.3;color:rgba(240,234,255,.85);display:block;}
+.misra:hover{color:var(--lav);transition:color .3s;}
+.sig{font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(16px,2.5vw,22px);color:var(--rose);text-align:center;margin-top:36px;text-shadow:0 0 16px rgba(232,121,249,.5);}
+.finale-close{margin-top:50px;text-align:center;}
+.finale-wish{font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(16px,2.8vw,24px);color:var(--lav);line-height:2.4;max-width:500px;}
+.finale-en{font-style:italic;font-size:clamp(13px,1.8vw,16px);color:rgba(196,181,253,.45);letter-spacing:.12em;margin-top:16px;direction:ltr;}
+.candles{font-size:32px;margin-bottom:20px;animation:flick 2s ease-in-out infinite;}
+@keyframes flick{0%,100%{transform:scale(1) rotate(-1deg);}50%{transform:scale(1.06) rotate(1deg);}}
+@media(max-width:580px){.poem-grid{grid-template-columns:1fr;}.poem-card{padding:24px 16px;}#cur,#cur-r{display:none;}}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- NAV DOTS -->
+<div id="nav">
+  <div class="dot on" onclick="goTo(0)"></div>
+  <div class="dot" onclick="goTo(1)"></div>
+  <div class="dot" onclick="goTo(2)"></div>
+  <div class="dot" onclick="goTo(3)"></div>
+  <div class="dot" onclick="goTo(4)"></div>
+  <div class="dot" onclick="goTo(5)"></div>
+</div>
+
+<!-- ══ SCENE 1: THE DOOR ══ -->
+<div class="scene active" id="s1">
+  <canvas class="bg" id="s1-canvas"></canvas>
+  <div id="door-wrap">
+    <p class="door-title">طوبیٰ رضوان</p>
+    <p class="door-sub">a universe waits behind this door</p>
+    <div id="door-svg-wrap">
+      <svg id="door-svg" width="180" height="260" viewBox="0 0 180 260" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="openDoor()">
+        <rect x="10" y="10" width="160" height="240" rx="80" fill="rgba(26,5,51,0.7)" stroke="rgba(139,92,246,0.6)" stroke-width="1.5"/>
+        <rect x="22" y="22" width="136" height="216" rx="72" fill="none" stroke="rgba(196,181,253,0.2)" stroke-width="0.8"/>
+        <!-- arch top glow -->
+        <ellipse cx="90" cy="90" rx="50" ry="50" fill="none" stroke="rgba(196,181,253,0.15)" stroke-width="0.5"/>
+        <!-- door handle -->
+        <circle cx="118" cy="130" r="7" fill="rgba(251,191,36,0.7)" stroke="rgba(251,191,36,0.4)" stroke-width="1"/>
+        <circle cx="118" cy="130" r="3" fill="#fbbf24"/>
+        <!-- star pattern on door -->
+        <text x="90" y="105" font-size="18" text-anchor="middle" fill="rgba(196,181,253,0.5)">✦</text>
+        <text x="65" y="150" font-size="10" text-anchor="middle" fill="rgba(196,181,253,0.3)">✦</text>
+        <text x="115" y="165" font-size="8" text-anchor="middle" fill="rgba(251,191,36,0.3)">✦</text>
+        <text x="80" y="185" font-size="12" text-anchor="middle" fill="rgba(232,121,249,0.3)">✦</text>
+        <!-- key hole -->
+        <circle cx="62" cy="130" r="5" fill="none" stroke="rgba(196,181,253,0.4)" stroke-width="1"/>
+        <rect x="59" y="130" width="6" height="8" rx="1" fill="none" stroke="rgba(196,181,253,0.4)" stroke-width="1"/>
+      </svg>
+      <div id="door-open-anim"></div>
+      <p class="knock-hint">— click to enter —</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCENE 2: CONSTELLATION WORDS ══ -->
+<div class="scene" id="s2">
+  <canvas id="s2-canvas"></canvas>
+  <div id="s2-title">
+    <p style="font-family:'Noto Nastaliq Urdu',serif;font-size:clamp(16px,2.5vw,24px);color:rgba(196,181,253,.55);">الفاظ کا آسمان</p>
+    <p style="font-style:italic;font-size:12px;color:rgba(196,181,253,.3);letter-spacing:.25em;direction:ltr;margin-top:6px;">hover a star · touch her words</p>
+  </div>
+  <div id="s2-popup"></div>
+  <p id="s2-hint">— each star is a word from her poem —</p>
+</div>
+
+<!-- ══ SCENE 3: METEOR RAIN ══ -->
+<div class="scene" id="s3">
+  <canvas id="s3-canvas"></canvas>
+  <div id="s3-title">
+    <p>The Poem Falls</p>
+    <p>move your cursor · catch the verses</p>
+  </div>
+  <p id="s3-catch">— her words rain from the sky —</p>
+</div>
+
+<!-- ══ SCENE 4: WISH GARDEN ══ -->
+<div class="scene" id="s4">
+  <canvas id="s4-canvas"></canvas>
+  <div id="s4-title">
+    <p>باغِ تمنا</p>
+    <p>click anywhere to bloom a wish</p>
+  </div>
+  <p id="s4-hint">— click the garden to bloom wishes —</p>
+</div>
+
+<!-- ══ SCENE 5: CONSTELLATION NAME ══ -->
+<div class="scene" id="s5">
+  <canvas id="s5-canvas"></canvas>
+  <div id="s5-label">
+    <p>the poet writes her name in stars</p>
+    <p>دیکھیں — آسمان آپ کو یاد کرتا ہے</p>
+  </div>
+  <div id="s5-name">~ زلخا ماروی ~</div>
+</div>
+
+<!-- ══ SCENE 6: FINALE ══ -->
+<div class="scene" id="s6">
+  <canvas id="s6-canvas"></canvas>
+  <div id="s6-inner">
+    <p class="finale-badge">✦ the full poem · the complete gift ✦</p>
+    <h1 class="finale-name">طوبیٰ رضوان</h1>
+    <p style="font-style:italic;font-size:clamp(13px,2vw,16px);color:rgba(196,181,253,.4);letter-spacing:.15em;margin-top:8px;direction:ltr;">سالگرہ مبارک</p>
+    <div class="finale-divider"><div class="fdl"></div><span style="color:var(--gold);font-size:14px;">✦</span><div class="fdl"></div></div>
+    <p class="finale-poem-title">{ اف یہ دنیا بھی کمال کرتی ہے }</p>
+    <div class="poem-card">
+      <div class="poem-grid">
+        <div id="fp-col1"></div>
+        <div id="fp-col2"></div>
+      </div>
+      <p class="sig">~ زلخا ماروی ~</p>
+    </div>
+    <div class="finale-close">
+      <div class="candles">🕯️ ✨ 🕯️</div>
+      <p class="finale-wish">آپ کے الفاظ میں وہ روشنی ہے<br>جو تاریک راتوں کو بھی منور کرتی ہے<br>یہ سالگرہ آپ کے لیے اتنی ہی خاص ہو<br>جتنے آپ کے شعر دلوں کو چھوتے ہیں</p>
+      <p class="finale-en">may every year bring you more words, more stars, more magic.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════ GLOBALS ══════════
+const POEM = {
+  title:'اف یہ دنیا بھی کمال کرتی ہے',
+  col1:[
+    ['اف یہ دنیا بھی کمال کرتی ہے','جواب موجود ہے کہ سوال کرتی ہے'],
+    ['کوئی ہمدرد نہیں یہاں','اوڑھنے کو نقاب کرتی ہے'],
+    ['الفاظ جام بھریں نہ بھریں','جذبات کا انتشار کرتی ہے'],
+    ['پیشی پھر بے سود ہے','یہ تعلقات کا بگاڑ چاہتی ہے'],
+    ['عمل صبر سنا ہے میں نے','یہ بھی میری ہار چاہتی ہے'],
+    ['گرتے آنسوؤں کی بوندوں پر','یہ لفظ بدنامی ادا کرتی ہے'],
+    ['دلوں کو رنجشوں میں ڈال کر','قصہ جدائی پہ واہ کرتی ہے'],
+  ],
+  col2:[
+    ['رسوا اسے غیرت کے نام پر','یہ دردِ بے وجہ کرتی ہے'],
+    ['لبوں کو پھر ساکن رکھے','یہ رس رس کروا کرتی ہے'],
+    ['نالووں سے پھر کفن پر اس کے','زخم پہ پچھتاوا ذرا کرتی ہے'],
+    ['ہرا دیا مخلصی نے اسے','یہ قصوں سے قصہ بیاں کرتی ہے'],
+    ['انجام بتا کر ہر کسی کو','یہ محبت سے سب کو منع کرتی ہے'],
+    ['ہمدردی کا پھر لبادہ اوڑھے','زخم نت نئے بحال کرتی ہے'],
+    ['اف یہ دنیا بھی کمال کرتی ہے','اف یہ دنیا بھی کمال کرتی ہے'],
+  ],
+  allLines:[]
+};
+POEM.col1.forEach(s=>s.forEach(m=>POEM.allLines.push(m)));
+POEM.col2.forEach(s=>s.forEach(m=>POEM.allLines.push(m)));
+
+// ══════════ CURSOR ══════════
+const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function ca(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;cur.style.left=mx-4+'px';cur.style.top=my-4+'px';curR.style.left=rx-16+'px';curR.style.top=ry-16+'px';requestAnimationFrame(ca);})();
+
+// ══════════ SCENE MANAGEMENT ══════════
+let curScene=0;
+const scenes=document.querySelectorAll('.scene');
+const dots=document.querySelectorAll('.dot');
+const sceneInits=[initS1,initS2,initS3,initS4,initS5,initS6];
+const sceneStarted=new Array(6).fill(false);
+
+function goTo(i){
+  scenes[curScene].classList.remove('active');
+  dots[curScene].classList.remove('on');
+  curScene=i;
+  scenes[i].classList.add('active');
+  dots[i].classList.add('on');
+  if(!sceneStarted[i]){sceneStarted[i]=true;sceneInits[i]();}
+}
+
+// Arrow key / scroll navigation
+let scrollLock=false;
+document.addEventListener('wheel',e=>{
+  if(scrollLock)return;
+  if(curScene===5)return;// let scene 6 scroll
+  scrollLock=true;
+  if(e.deltaY>0&&curScene<5)goTo(curScene+1);
+  else if(e.deltaY<0&&curScene>0)goTo(curScene-1);
+  setTimeout(()=>scrollLock=false,1000);
+},{passive:true});
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){if(curScene<5)goTo(curScene+1);}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){if(curScene>0)goTo(curScene-1);}
+});
+
+// ══════════ STAR BACKGROUND UTIL ══════════
+function makeStarBg(canvas,count=200,colors=['#f0eaff','#c4b5fd','#fbbf24']){
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+  const stars=Array.from({length:count},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.3+.2,a:Math.random(),sp:Math.random()*.006+.002,ph:Math.random()*Math.PI*2,c:colors[Math.floor(Math.random()*colors.length)]}));
+  function draw(t){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.c;ctx.globalAlpha=s.a*(.4+.6*Math.sin(t*s.sp+s.ph));ctx.fill();});ctx.globalAlpha=1;}
+  let t=0;(function loop(){t+=.016;draw(t);requestAnimationFrame(loop);})();
+}
+
+// ══════════ SCENE 1: DOOR ══════════
+function initS1(){
+  makeStarBg(document.getElementById('s1-canvas'),300);
+}
+initS1();sceneStarted[0]=true;
+
+function openDoor(){
+  const svg=document.getElementById('door-svg');
+  // burst of light
+  svg.style.filter='drop-shadow(0 0 80px rgba(255,255,255,.9))';
+  // animate door opening
+  let scale=1,tx=0;
+  (function animDoor(){
+    scale+=.04;tx-=6;
+    svg.style.transform=`scaleX(${Math.max(0,1-(scale-1)*4)}) translateX(${tx}px)`;
+    svg.style.opacity=Math.max(0,1-(scale-1)*3);
+    if(scale<1.3)requestAnimationFrame(animDoor);
+    else{
+      document.getElementById('door-wrap').style.opacity='0';
+      document.getElementById('door-wrap').style.transition='opacity .3s';
+      setTimeout(()=>goTo(1),400);
+    }
+  })();
+}
+
+// ══════════ SCENE 2: CONSTELLATION WORDS ══════════
+function initS2(){
+  const cv=document.getElementById('s2-canvas');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const ctx=cv.getContext('2d');
+  const popup=document.getElementById('s2-popup');
+  const W=cv.width,H=cv.height;
+
+  // build word nodes from poem
+  const words=[];
+  POEM.allLines.forEach((line,li)=>{
+    const ws=line.split(' ');
+    ws.forEach((w,wi)=>{
+      words.push({
+        word:w,
+        line:line,
+        x:80+Math.random()*(W-160),
+        y:80+Math.random()*(H-160),
+        vx:(Math.random()-.5)*.25,
+        vy:(Math.random()-.5)*.25,
+        r:Math.random()*2+1,
+        pulse:Math.random()*Math.PI*2,
+        hovered:false,
+        baseColor:['#c4b5fd','#fbbf24','#e879f9','#f0eaff'][Math.floor(Math.random()*4)]
+      });
+    });
+  });
+
+  // constellation lines between nearby words
+  function getNearby(i,d=120){
+    const nb=[];
+    for(let j=0;j<words.length;j++){
+      if(j===i)continue;
+      const dx=words[i].x-words[j].x,dy=words[i].y-words[j].y;
+      if(Math.sqrt(dx*dx+dy*dy)<d)nb.push(j);
+    }
+    return nb.slice(0,2);
+  }
+
+  let t=0;
+  (function loop(){
+    t+=.012;
+    ctx.clearRect(0,0,W,H);
+    // bg stars
+    // move words
+    words.forEach(w=>{
+      w.x+=w.vx;w.y+=w.vy;
+      if(w.x<40||w.x>W-40)w.vx*=-1;
+      if(w.y<40||w.y>H-40)w.vy*=-1;
+    });
+    // draw constellation lines
+    ctx.globalAlpha=.12;
+    ctx.strokeStyle='#8b5cf6';ctx.lineWidth=.6;
+    words.forEach((w,i)=>{
+      getNearby(i,100).forEach(j=>{
+        ctx.beginPath();ctx.moveTo(w.x,w.y);ctx.lineTo(words[j].x,words[j].y);ctx.stroke();
+      });
+    });
+    ctx.globalAlpha=1;
+    // draw word-stars
+    words.forEach(w=>{
+      const pulse=.5+.5*Math.sin(t*1.2+w.pulse);
+      const r=w.hovered?w.r*3:w.r*(1+.3*pulse);
+      // glow
+      if(w.hovered){
+        const g=ctx.createRadialGradient(w.x,w.y,0,w.x,w.y,28);
+        g.addColorStop(0,'rgba(196,181,253,.5)');g.addColorStop(1,'transparent');
+        ctx.fillStyle=g;ctx.beginPath();ctx.arc(w.x,w.y,28,0,Math.PI*2);ctx.fill();
+      }
+      ctx.beginPath();ctx.arc(w.x,w.y,r,0,Math.PI*2);
+      ctx.fillStyle=w.hovered?'#fff':w.baseColor;
+      ctx.globalAlpha=w.hovered?1:(.4+.4*pulse);
+      ctx.fill();ctx.globalAlpha=1;
+      // Urdu word label on hover
+      if(w.hovered){
+        ctx.font=`18px 'Noto Nastaliq Urdu',serif`;
+        ctx.fillStyle='rgba(196,181,253,.9)';
+        ctx.textAlign='center';
+        ctx.fillText(w.word,w.x,w.y-18);
+      }
+    });
+    requestAnimationFrame(loop);
+  })();
+
+  cv.addEventListener('mousemove',e=>{
+    const rect=cv.getBoundingClientRect();
+    const mx=e.clientX-rect.left,my=e.clientY-rect.top;
+    let hoveredLine=null;
+    words.forEach(w=>{
+      const dx=mx-w.x,dy=my-w.y;
+      w.hovered=Math.sqrt(dx*dx+dy*dy)<18;
+      if(w.hovered)hoveredLine=w.line;
+    });
+    if(hoveredLine){
+      popup.style.opacity='1';
+      popup.style.left=Math.min(e.clientX+20,W-360)+'px';
+      popup.style.top=Math.max(e.clientY-60,10)+'px';
+      popup.textContent=hoveredLine;
+    } else {popup.style.opacity='0';}
+  });
+  cv.addEventListener('mouseleave',()=>{popup.style.opacity='0';});
+}
+
+// ══════════ SCENE 3: METEOR RAIN ══════════
+function initS3(){
+  const cv=document.getElementById('s3-canvas');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+
+  // bg stars
+  const bgStars=Array.from({length:200},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*.8+.2,a:Math.random()*.6+.1}));
+
+  const meteors=[];
+  const colors=['#c4b5fd','#e879f9','#fbbf24','#f0eaff','#8b5cf6'];
+  let mTimer=0;
+  let mouseX=W/2,mouseY=H/2;
+  const caught=[];
+
+  function spawnMeteor(){
+    const line=POEM.allLines[Math.floor(Math.random()*POEM.allLines.length)];
+    meteors.push({
+      line,x:Math.random()*W,y:-40,
+      speed:Math.random()*1.5+.6,
+      drift:(Math.random()-.5)*.3,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      alpha:1,caught:false,catchAnim:0,
+      trail:[],size:Math.random()*3+1.5
+    });
+  }
+
+  cv.addEventListener('mousemove',e=>{
+    const r=cv.getBoundingClientRect();
+    mouseX=e.clientX-r.left;mouseY=e.clientY-r.top;
+  });
+
+  let t=0;
+  (function loop(){
+    t+=.016;mTimer++;
+    if(mTimer>55){mTimer=0;spawnMeteor();}
+    ctx.fillStyle='rgba(3,1,13,.18)';ctx.fillRect(0,0,W,H);
+
+    // bg stars
+    bgStars.forEach(s=>{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='#f0eaff';ctx.globalAlpha=s.a;ctx.fill();});
+    ctx.globalAlpha=1;
+
+    // meteors
+    for(let i=meteors.length-1;i>=0;i--){
+      const m=meteors[i];
+      if(!m.caught){
+        m.trail.push({x:m.x,y:m.y});
+        if(m.trail.length>16)m.trail.shift();
+        m.x+=m.drift;m.y+=m.speed;
+        // check catch
+        const dx=mouseX-m.x,dy=mouseY-m.y;
+        if(Math.sqrt(dx*dx+dy*dy)<50){m.caught=true;m.catchAnim=0;}
+      } else {
+        m.catchAnim+=.06;
+        m.alpha=Math.max(0,1-m.catchAnim*1.2);
+        m.y-=1.5;m.x+=Math.sin(m.catchAnim*4)*2;
+      }
+      // trail
+      m.trail.forEach((pt,ti)=>{
+        const a=(ti/m.trail.length)*.3*m.alpha;
+        ctx.beginPath();ctx.arc(pt.x,pt.y,m.size*.5,0,Math.PI*2);
+        ctx.fillStyle=m.color;ctx.globalAlpha=a;ctx.fill();
+      });
+      ctx.globalAlpha=1;
+      // glow
+      const g=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,18);
+      g.addColorStop(0,m.color+'88');g.addColorStop(1,'transparent');
+      ctx.fillStyle=g;ctx.globalAlpha=m.alpha*.6;
+      ctx.beginPath();ctx.arc(m.x,m.y,18,0,Math.PI*2);ctx.fill();
+      ctx.globalAlpha=1;
+      // dot
+      ctx.beginPath();ctx.arc(m.x,m.y,m.size,0,Math.PI*2);
+      ctx.fillStyle=m.color;ctx.globalAlpha=m.alpha;ctx.fill();ctx.globalAlpha=1;
+      // text
+      ctx.save();ctx.globalAlpha=m.caught?m.alpha*.7:m.alpha*.55;
+      ctx.font=`${Math.floor(12+m.size*2)}px 'Noto Nastaliq Urdu',serif`;
+      ctx.fillStyle=m.color;ctx.textAlign='center';
+      ctx.fillText(m.line,m.x,m.y-20);ctx.restore();
+
+      if(m.y>H+60||m.alpha<=0)meteors.splice(i,1);
+    }
+    requestAnimationFrame(loop);
+  })();
+}
+
+// ══════════ SCENE 4: WISH GARDEN ══════════
+function initS4(){
+  const cv=document.getElementById('s4-canvas');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+
+  const wishes=[
+    'آپ کی ہنسی ہمیشہ روشن رہے 🌸',
+    'آپ کے خواب پورے ہوں 🌙',
+    'آپ کی قلم کبھی نہ رکے ✨',
+    'آپ کا دل ہمیشہ خوش رہے 🌺',
+    'آپ کی محبت لافانی ہو 💫',
+    'آپ کے الفاظ دلوں کو چھوتے رہیں 🌷',
+    'آپ کو بے انتہا خوشیاں ملیں 🎂',
+    'آپ کی ہر سالگرہ خاص ہو 🕯️',
+  ];
+  const flowers=[];
+  const bgStars=Array.from({length:180},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*.7+.2,a:Math.random()*.5+.1,sp:Math.random()*.004+.001,ph:Math.random()*Math.PI*2}));
+
+  class Flower{
+    constructor(x,y,wish){
+      this.x=x;this.y=y;this.wish=wish;
+      this.petals=5+Math.floor(Math.random()*4);
+      this.r=0;this.maxR=30+Math.random()*25;
+      this.color=['#e879f9','#c4b5fd','#fbbf24','#f9a8d4','#86efac','#67e8f9'][Math.floor(Math.random()*6)];
+      this.stemH=0;this.maxStemH=60+Math.random()*60;
+      this.alpha=0;this.phase=Math.random()*Math.PI*2;
+      this.showText=false;this.textAlpha=0;this.textTimer=0;
+    }
+    update(){
+      if(this.stemH<this.maxStemH)this.stemH+=2;
+      if(this.r<this.maxR)this.r+=.8;
+      if(this.alpha<1)this.alpha+=.03;
+      this.textTimer++;
+      if(this.textTimer>30)this.showText=true;
+      if(this.showText&&this.textAlpha<1)this.textAlpha+=.03;
+    }
+    draw(ctx,t){
+      ctx.save();ctx.globalAlpha=this.alpha;
+      // stem
+      ctx.beginPath();ctx.moveTo(this.x,this.y);ctx.lineTo(this.x,this.y-this.stemH);
+      ctx.strokeStyle='rgba(134,239,172,.6)';ctx.lineWidth=2;ctx.stroke();
+      // petals
+      for(let p=0;p<this.petals;p++){
+        const angle=(p/this.petals)*Math.PI*2+t*.3+this.phase;
+        const px=this.x+Math.cos(angle)*this.r*.7;
+        const py=this.y-this.stemH+Math.sin(angle)*this.r*.7;
+        ctx.beginPath();ctx.ellipse(px,py,this.r*.45,this.r*.28,angle,0,Math.PI*2);
+        ctx.fillStyle=this.color;ctx.globalAlpha=this.alpha*.7;ctx.fill();
+      }
+      // center
+      ctx.beginPath();ctx.arc(this.x,this.y-this.stemH,this.r*.28,0,Math.PI*2);
+      ctx.fillStyle='#fbbf24';ctx.globalAlpha=this.alpha;ctx.fill();
+      // wish text
+      if(this.showText){
+        ctx.globalAlpha=this.textAlpha*this.alpha;
+        ctx.font=`14px 'Noto Nastaliq Urdu',serif`;
+        ctx.fillStyle='#f0eaff';ctx.textAlign='center';
+        const tw=ctx.measureText(this.wish).width;
+        ctx.fillStyle='rgba(10,4,28,.7)';
+        ctx.fillRect(this.x-tw/2-10,this.y-this.stemH-54,tw+20,32);
+        ctx.fillStyle='#c4b5fd';
+        ctx.fillText(this.wish,this.x,this.y-this.stemH-32);
+      }
+      ctx.restore();
+    }
+  }
+
+  cv.addEventListener('click',e=>{
+    const r=cv.getBoundingClientRect();
+    const x=e.clientX-r.left,y=e.clientY-r.top;
+    if(flowers.length>=wishes.length)flowers.shift();
+    flowers.push(new Flower(x,y,wishes[flowers.length%wishes.length]));
+  });
+
+  // ground
+  let t=0;
+  (function loop(){
+    t+=.016;
+    ctx.clearRect(0,0,W,H);
+    // bg gradient sky
+    const sky=ctx.createLinearGradient(0,0,0,H);
+    sky.addColorStop(0,'#03010d');sky.addColorStop(.7,'#0d1a2a');sky.addColorStop(1,'#0a1f0a');
+    ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+    // bg stars
+    bgStars.forEach(s=>{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='#f0eaff';ctx.globalAlpha=s.a*(.4+.6*Math.sin(t*s.sp+s.ph));ctx.fill();});ctx.globalAlpha=1;
+    // moon
+    ctx.beginPath();ctx.arc(W*.85,H*.12,28,0,Math.PI*2);
+    const mg=ctx.createRadialGradient(W*.85,H*.12,0,W*.85,H*.12,28);
+    mg.addColorStop(0,'rgba(196,181,253,.25)');mg.addColorStop(1,'transparent');
+    ctx.fillStyle=mg;ctx.fill();
+    ctx.beginPath();ctx.arc(W*.85,H*.12,18,0,Math.PI*2);
+    ctx.fillStyle='rgba(240,234,255,.15)';ctx.fill();
+    // ground
+    ctx.fillStyle='rgba(10,30,10,.8)';ctx.fillRect(0,H*.88,W,H*.12);
+    // grass blades
+    for(let g=0;g<W;g+=8){
+      const h=8+Math.sin(g*.05+t)*.4;
+      ctx.beginPath();ctx.moveTo(g,H*.88);ctx.lineTo(g+2,H*.88-h);ctx.lineTo(g+4,H*.88);
+      ctx.fillStyle=`rgba(74,222,128,${.2+Math.random()*.1})`;ctx.fill();
+    }
+    // flowers
+    flowers.forEach(f=>{f.update();f.draw(ctx,t);});
+    requestAnimationFrame(loop);
+  })();
+}
+
+// ══════════ SCENE 5: CONSTELLATION NAME ══════════
+function initS5(){
+  const cv=document.getElementById('s5-canvas');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+
+  // constellations — manually placed stars for "Tooba" in abstract form
+  const constellations=[
+    // Large starfield that draws patterns
+  ];
+
+  const bgStars=Array.from({length:350},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*.9+.1,a:Math.random(),sp:Math.random()*.005+.001,ph:Math.random()*Math.PI*2}));
+
+  // Shooting stars that spell out T O O B A in arcs
+  const nameStars=[];
+  const letters=[
+    // Each letter as a set of star points (abstract constellation shapes)
+    // T
+    [{x:.15,y:.25},{x:.25,y:.25},{x:.35,y:.25},{x:.25,y:.35},{x:.25,y:.45},{x:.25,y:.55}],
+    // O
+    [{x:.42,y:.28},{x:.52,y:.24},{x:.62,y:.28},{x:.64,y:.38},{x:.62,y:.48},{x:.52,y:.52},{x:.42,y:.48},{x:.40,y:.38}],
+    // O (second)
+    [{x:.42+.28,y:.28},{x:.52+.28,y:.24},{x:.62+.28,y:.28},{x:.64+.28,y:.38},{x:.62+.28,y:.48},{x:.52+.28,y:.52},{x:.42+.28,y:.48},{x:.40+.28,y:.38}],
+    // B
+    [{x:.05,y:.65},{x:.05,y:.75},{x:.05,y:.85},{x:.08,y:.65},{x:.12,y:.67},{x:.13,y:.72},{x:.08,y:.75},{x:.12,y:.77},{x:.13,y:.82},{x:.08,y:.85}],
+    // A
+    [{x:.25,y:.85},{x:.28,y:.78},{x:.31,y:.71},{x:.34,y:.64},{x:.37,y:.71},{x:.40,y:.78},{x:.43,y:.85},{x:.29,y:.76},{x:.39,y:.76}],
+  ];
+
+  let revealProgress=0;
+  let allPoints=[];
+  letters.forEach(pts=>{pts.forEach(p=>{allPoints.push({x:p.x*W,y:p.y*H,alpha:0,r:Math.random()*2+1.5,color:Math.random()>.5?'#c4b5fd':'#fbbf24',pulse:Math.random()*Math.PI*2});});});
+
+  // also add "زلخا ماروی" reveal after all stars appear
+  let nameVisible=false;
+  setTimeout(()=>{
+    nameVisible=true;
+    document.getElementById('s5-name').style.opacity='1';
+  },allPoints.length*80+1000);
+
+  allPoints.forEach((p,i)=>{setTimeout(()=>{p.alpha=1;},i*80);});
+
+  let t=0;
+  (function loop(){
+    t+=.016;ctx.clearRect(0,0,W,H);
+    bgStars.forEach(s=>{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='#f0eaff';ctx.globalAlpha=s.a*(.3+.5*Math.sin(t*s.sp+s.ph));ctx.fill();});ctx.globalAlpha=1;
+
+    // draw constellation lines between close points in same letter
+    let offset=0;
+    letters.forEach(pts=>{
+      for(let i=0;i<pts.length-1;i++){
+        const a=allPoints[offset+i],b=allPoints[offset+i+1];
+        if(a.alpha>.5&&b.alpha>.5){
+          ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle='rgba(139,92,246,.25)';ctx.lineWidth=.8;ctx.stroke();
+        }
+      }
+      offset+=pts.length;
+    });
+
+    // draw stars
+    allPoints.forEach(p=>{
+      if(p.alpha<=0)return;
+      const pulse=.7+.3*Math.sin(t*1.5+p.pulse);
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*4);
+      g.addColorStop(0,p.color+'80');g.addColorStop(1,'transparent');
+      ctx.fillStyle=g;ctx.globalAlpha=p.alpha*.5;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r*4,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r*pulse,0,Math.PI*2);
+      ctx.fillStyle=p.color;ctx.globalAlpha=p.alpha;ctx.fill();ctx.globalAlpha=1;
+    });
+
+    // nebula center
+    const ng=ctx.createRadialGradient(W*.5,H*.5,0,W*.5,H*.5,Math.min(W,H)*.4);
+    ng.addColorStop(0,'rgba(107,33,168,.06)');ng.addColorStop(1,'transparent');
+    ctx.fillStyle=ng;ctx.fillRect(0,0,W,H);
+    requestAnimationFrame(loop);
+  })();
+}
+
+// ══════════ SCENE 6: FINALE ══════════
+function initS6(){
+  // build poem
+  const c1=document.getElementById('fp-col1'),c2=document.getElementById('fp-col2');
+  POEM.col1.forEach((sher,i)=>{
+    const d=document.createElement('div');d.className='sher';
+    sher.forEach(m=>{const s=document.createElement('span');s.className='misra';s.textContent=m;d.appendChild(s);});
+    d.style.transitionDelay=(i*.1)+'s';c1.appendChild(d);
+  });
+  POEM.col2.forEach((sher,i)=>{
+    const d=document.createElement('div');d.className='sher';
+    sher.forEach(m=>{const s=document.createElement('span');s.className='misra';s.textContent=m;d.appendChild(s);});
+    d.style.transitionDelay=(i*.1+.05)+'s';c2.appendChild(d);
+  });
+
+  // bg canvas
+  const cv=document.getElementById('s6-canvas');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const ctx=cv.getContext('2d');
+  const W=cv.width,H=cv.height;
+  const stars=Array.from({length:300},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,a:Math.random(),sp:Math.random()*.005+.001,ph:Math.random()*Math.PI*2}));
+  let t=0;(function loop(){t+=.016;ctx.clearRect(0,0,W,H);stars.forEach(s=>{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='#f0eaff';ctx.globalAlpha=s.a*(.3+.5*Math.sin(t*s.sp+s.ph));ctx.fill();});ctx.globalAlpha=1;requestAnimationFrame(loop);})();
+
+  // confetti of stars on load
+  setTimeout(()=>{
+    for(let i=0;i<40;i++){
+      setTimeout(()=>{
+        const el=document.createElement('div');
+        el.style.cssText=`position:fixed;left:${Math.random()*100}vw;top:-10px;width:3px;height:3px;border-radius:50%;background:${['#c4b5fd','#fbbf24','#e879f9','#f0eaff'][Math.floor(Math.random()*4)]};pointer-events:none;z-index:200;animation:cfall ${2+Math.random()*3}s linear forwards;`;
+        document.body.appendChild(el);setTimeout(()=>el.remove(),5000);
+      },i*80);
+    }
+  },300);
+
+  // intersection observer for shers
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.1});
+  document.querySelectorAll('.sher').forEach(s=>obs.observe(s));
+}
+
+// confetti fall animation
+const styleEl=document.createElement('style');
+styleEl.textContent=`@keyframes cfall{0%{transform:translateY(0) rotate(0);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}`;
+document.head.appendChild(styleEl);
+
+// click burst everywhere
+document.addEventListener('click',e=>{
+  for(let i=0;i<6;i++){
+    const el=document.createElement('div');
+    const angle=(i/6)*Math.PI*2;
+    el.style.cssText=`position:fixed;left:${e.clientX}px;top:${e.clientY}px;width:3px;height:3px;background:${['#c4b5fd','#fbbf24','#e879f9'][i%3]};border-radius:50%;pointer-events:none;z-index:9997;transition:all .6s ease-out;`;
+    document.body.appendChild(el);
+    requestAnimationFrame(()=>{
+      el.style.transform=`translate(${Math.cos(angle)*50}px,${Math.sin(angle)*50}px)`;
+      el.style.opacity='0';
+    });
+    setTimeout(()=>el.remove(),700);
+  }
+});
+</script>
+</body>
+</html>
+HTMLEOF
